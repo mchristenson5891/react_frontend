@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom'
 
 import NavBar from './component/NavBar/NavBar'
+import Login from './component/Login/Login'
 
 import * as routes from './constants/routes'
 import './App.css';
@@ -14,7 +15,7 @@ class App extends Component {
   componentDidMount() {
 
   }
-  
+
   render() {
     return (
       <div>
@@ -24,6 +25,7 @@ class App extends Component {
           <Route exact path={routes.HOME} render={() => <div>HOME</div>} />
           <Route exact path={routes.USERS} render={() => <div>USER</div>} />
           <Route exact path={routes.POSTS} render={() => <div>POST</div>} />
+          <Route exact path={'/login'} render={() => <Login />} />
           <Route render={() => <div>NOT FOUND</div>} />
         </Switch>
       </div>
