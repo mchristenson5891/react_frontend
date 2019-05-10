@@ -3,10 +3,11 @@ import { Redirect } from 'react-router-dom'
 
 class Login extends Component {
     state = {
-        name: '',
+        username: '',
         password: '',
         logged: false
     }
+
     changeHandler = e => {
         this.setState({
             [e.target.name]: e.target.value
@@ -15,7 +16,7 @@ class Login extends Component {
 
     onSubmit = async (e) => {
         e.preventDefault();
-        const loginResponse = await fetch('/login', {
+        const loginResponse = await fetch('/users/login', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify(this.state),
@@ -24,26 +25,24 @@ class Login extends Component {
             }
         })
 
-        // res.json({
-        //     data: foundUser,
-        //     sucess: true
-        // })
-
         const parsedResponse = await loginResponse.json();
         if(parsedResponse.success) {
+          this.props.doSetCurrentUser(parsedResponse.user)
             this.setState({
-                logged: true
+                logged: true,
             })
         }
     }
 
     render() {
+      const { username, password } = this.state
       return (
         this.state.logged
-        ? <Redirect to='/' />
+        ? <Redirect to={`/users/${this.props.currentUser._id}`} />
         : <form onSubmit={this.onSubmit}>
-            <input type="text" name="name" value={this.state.name} onChange={this.changeHandler} />
-            <input type="password" name="password" value={this.state.password} onChange={this.changeHandler} />
+            <input type="text" name="username" value={username} onChange={this.changeHandler} />
+            <input type="password" name="password" value={password} onChange={this.changeHandler} />
+            <button type='submit'>Submit</button>
           </form>
       )
     }
